@@ -92,6 +92,12 @@ def evaluate_permission(db: Session, actor: Agent, action: str, target: Agent = 
 
         # Explicitly define allow cases here. If not matched, it defaults to deny.
 
+        if action == "use_model_gateway":
+            if actor.role in ["Owner", "CEO"]:
+                is_allowed = True
+                reason = "Owner/CEO can directly access gateway"
+                return is_allowed
+
     finally:
         result = "ALLOW" if is_allowed else "DENY"
         # Log the permission check

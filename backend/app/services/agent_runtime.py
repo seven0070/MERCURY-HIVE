@@ -71,7 +71,9 @@ class AgentRuntime:
     def execute_agent_step(self, system_prompt: str, messages: list) -> str:
         if not evaluate_permission(self.db, self.actor, "execute_task", target=self.actor):
             raise HTTPException(status_code=403, detail="Permission denied to execute")
-        response = gateway.generate_response(system_prompt=system_prompt, messages=messages)
+        from app.schemas.gateway import GatewayRequest
+        request = GatewayRequest(system_prompt=system_prompt, messages=messages)
+        response = gateway.generate_response(request).content
         return response
 
 def get_runtime(db: Session, actor: Agent) -> AgentRuntime:
