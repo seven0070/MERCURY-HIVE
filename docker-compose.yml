@@ -1,7 +1,16 @@
-# Mercury Hive - Docker Compose
-# Placeholder for local development orchestration
 version: '3.8'
+
 services:
-  placeholder:
-    image: alpine
-    command: echo "Placeholder service"
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: mercury
+      POSTGRES_PASSWORD: hivepassword
+      POSTGRES_DB: mercury_hive
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

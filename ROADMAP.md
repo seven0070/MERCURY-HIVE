@@ -4,9 +4,9 @@
 - **Scope:** Blueprint freeze, repository structure setup, and documentation placeholders.
 - **Out of Scope:** Any code implementation or running services.
 
-## Build 1: Core Services
-- **Scope:** Initialization of core backend APIs and minimal frontend skeleton.
-- **Out of Scope:** Advanced agent interactions or complex UI.
+## Build 1: Control Plane
+- **Scope:** Initialization of core backend APIs, Agent Registry, Permission System (Owner supremacy, default-deny), and Append-only Audit Logging. (Completed)
+- **Out of Scope:** LLM calls, Advanced agent interactions, Autonomous behavior, complex UI.
 
 ## Build 2: Data Persistence
 - **Scope:** Database setup and initial integration with backend services.
