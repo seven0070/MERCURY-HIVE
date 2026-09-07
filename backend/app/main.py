@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from app.api import health, agents, audit, permissions, departments, memory, tasks, messages, gateway
+from app.api import health, agents, audit, permissions, departments, memory, tasks, messages, gateway, orchestration
 from app.db.session import SessionLocal
 from app.services.agent_service import initialize_owner
 
@@ -25,3 +25,4 @@ app.include_router(memory.router)
 app.include_router(tasks.router)
 app.include_router(messages.router)
 app.include_router(gateway.router)
+app.include_router(orchestration.router)

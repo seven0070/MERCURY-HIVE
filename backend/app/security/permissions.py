@@ -92,6 +92,12 @@ def evaluate_permission(db: Session, actor: Agent, action: str, target: Agent = 
 
         # Explicitly define allow cases here. If not matched, it defaults to deny.
 
+        if action == "orchestrate_tasks":
+            if actor.role in ["Owner", "CEO"]:
+                is_allowed = True
+                reason = "Owner/CEO can trigger top-level orchestration"
+                return is_allowed
+
         if action == "use_model_gateway":
             if actor.role in ["Owner", "CEO"]:
                 is_allowed = True

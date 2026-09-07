@@ -30,6 +30,8 @@ client = TestClient(app)
 
 @pytest.fixture(scope="function")
 def db():
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     db_session = TestingSessionLocal()
     initialize_owner(db_session)
