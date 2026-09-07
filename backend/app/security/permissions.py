@@ -2,6 +2,8 @@ from app.models.agent import Agent
 from sqlalchemy.orm import Session
 from app.audit.service import log_event
 from app.schemas.audit import AuditEventCreate
+from fastapi import Depends, HTTPException, Header
+from app.db.session import get_db
 
 # Role hierarchy: lower index = higher authority
 ROLE_HIERARCHY = {
@@ -72,6 +74,22 @@ def evaluate_permission(db: Session, actor: Agent, action: str, target: Agent = 
             is_allowed = True
             reason = "Audit read access granted"
 
+        if action == "execute_task":
+            if actor.role in ["Worker", "Temporary Sub-Agent", "Department Manager", "CEO"]:
+                is_allowed = True
+                reason = "Agent is authorized to execute tasks"
+                return is_allowed
+
+        if action == "send_message":
+            if target:
+                if actor.department == target.department:
+                    is_allowed = True
+                    reason = "Same department message allowed"
+                    return is_allowed
+                else:
+                    reason = "Cross department message denied without bridge"
+                    return is_allowed
+
         # Explicitly define allow cases here. If not matched, it defaults to deny.
 
     finally:
@@ -89,3 +107,13 @@ def evaluate_permission(db: Session, actor: Agent, action: str, target: Agent = 
         )
 
     return is_allowed
+
+def require_permission(action: str):
+    def dependency(x_actor_id: str = Header(...), db: Session = Depends(get_db)) -> Agent:
+        actor = db.query(Agent).filter(Agent.id == x_actor_id).first()
+        if not actor:
+            raise HTTPException(status_code=401, detail="Actor not found")
+        if not evaluate_permission(db, actor, action):
+            raise HTTPException(status_code=403, detail=f"Permission denied for action: {action}")
+        return actor
+    return dependency

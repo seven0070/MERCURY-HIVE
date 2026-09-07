@@ -5,4 +5,4 @@ Mercury Hive is an agentic system developed iteratively using a milestone strate
 ## Milestone Strategy
 - **Build 0:** Blueprint freeze and repository foundation. (Completed)
 - **Build 1:** Control Plane: Ownership, identity, roles, permissions, agent lifecycle, and audit logging. (Completed)
-- **Build 2-9:** Progressive implementation of architecture, models, and capabilities.
+- **Build 2-9:** Progressive implementation of architecture, models, and capabilities. (Build 5 Completed)

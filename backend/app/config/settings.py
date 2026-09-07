@@ -1,16 +1,14 @@
 from pydantic_settings import BaseSettings
+import os
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Mercury Hive Control Plane"
-    POSTGRES_USER: str = "mercury"
-    POSTGRES_PASSWORD: str = "hivepassword"
-    POSTGRES_DB: str = "mercury_hive"
-    POSTGRES_SERVER: str = "localhost"
-    POSTGRES_PORT: str = "5432"
 
     @property
     def DATABASE_URL(self) -> str:
-        return f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        # Use SQLite for local development
+        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'mercury_hive.db')
+        return f"sqlite:///{db_path}"
 
     class Config:
         env_file = ".env"
