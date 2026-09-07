@@ -1,0 +1,7 @@
+# Mercury Hive - Docker Compose
+# Placeholder for local development orchestration
+version: '3.8'
+services:
+  placeholder:
+    image: alpine
+    command: echo "Placeholder service"
